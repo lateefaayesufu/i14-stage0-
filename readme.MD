@@ -6,7 +6,7 @@ A testable, accessible, and responsive Todo Item Card built for the HNG Internsh
 
 ## Live URL
 
-> Replace with your deployed URL
+> https://cctodoapp.netlify.app/
 
 ---
 
