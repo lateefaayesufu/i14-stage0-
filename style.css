@@ -1,0 +1,578 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --paper: #f5f0e8;
+  --paper2: #ede5d4;
+  --paper3: #e0d4bc;
+  --paper4: #cbbfa6;
+  --green: #2d6a4f;
+  --green2: #1b4332;
+  --green3: #40916c;
+  --greenlt: #d8f3dc;
+  --green-mid: #52b788;
+  --ink: #1a1208;
+  --brown: #5c3d1e;
+  --muted: #8c7355;
+  --gold: #b5863a;
+  --offwhite: #faf7f2;
+  --red: #9b2226;
+  --red2: #641220;
+  --redlt: #f8d7da;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+body {
+  background: var(--paper);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  font-family: "DM Mono", monospace;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* halftone dot texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--paper4) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* giant ghost circle bg shape */
+body::after {
+  content: "";
+  position: fixed;
+  bottom: -180px;
+  left: -120px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: var(--green2);
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* tiny label above card */
+.pre-label {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  margin-bottom: 10px;
+  padding-left: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pre-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--paper4);
+}
+
+/* ══ CARD ══ */
+article[data-testid="test-todo-card"] {
+  background: var(--offwhite);
+  border: 2.5px solid var(--ink);
+  position: relative;
+  box-shadow: 8px 8px 0px var(--green2);
+  animation: cardIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translate(-12px, 20px) rotate(-0.5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* GREEN HERO */
+.card-hero {
+  background: var(--green);
+  border-bottom: 2.5px solid var(--ink);
+  padding: 1.8rem 1.8rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* big ghost number */
+.card-hero::before {
+  content: "01";
+  position: absolute;
+  right: -10px;
+  bottom: -30px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 130px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+  letter-spacing: -2px;
+}
+
+/* diagonal stripe accent top-right */
+.card-hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 90px;
+  height: 90px;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 4px,
+    transparent 4px,
+    transparent 10px
+  );
+  pointer-events: none;
+}
+
+.hero-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 1rem;
+}
+
+.hero-eyebrow {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--green-mid);
+  margin-bottom: 8px;
+}
+
+h3[data-testid="test-todo-title"] {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.05;
+  max-width: 300px;
+  transition: all 0.3s;
+}
+
+h3[data-testid="test-todo-title"].done {
+  text-decoration: line-through;
+  opacity: 0.35;
+}
+
+span[data-testid="test-todo-priority"] {
+  flex-shrink: 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  background: var(--offwhite);
+  color: var(--ink);
+  padding: 8px 16px;
+  border: 2px solid var(--ink);
+  white-space: nowrap;
+  margin-top: 2px;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+p[data-testid="test-todo-description"] {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
+/* CARD BODY */
+.card-body {
+  padding: 1.5rem 1.8rem 1.4rem;
+}
+
+/* CHECK ROW */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px 12px 16px;
+  border: 2px solid var(--ink);
+  background: var(--paper2);
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+
+.check-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--green3);
+  border-right: 2px solid var(--ink);
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid var(--ink);
+  background: var(--offwhite);
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  flex-shrink: 0;
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"]:hover {
+  background: var(--greenlt);
+  border-color: var(--green);
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"]:focus-visible {
+  outline: 3px solid var(--green3);
+  outline-offset: 3px;
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"]:checked {
+  background: var(--green);
+  border-color: var(--green2);
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -58%) rotate(45deg);
+  width: 5px;
+  height: 9px;
+  border-right: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+}
+
+.check-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--brown);
+  cursor: pointer;
+  user-select: none;
+  flex: 1;
+  letter-spacing: 0.04em;
+}
+
+span[data-testid="test-todo-status"] {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  padding: 4px 11px;
+  border: 2px solid var(--ink);
+  background: var(--greenlt);
+  color: var(--green2);
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+span[data-testid="test-todo-status"].done {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green2);
+  box-shadow: 2px 2px 0 var(--green2);
+}
+
+/* META two-column grid */
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 2px solid var(--ink);
+  margin-bottom: 1.2rem;
+  background: var(--paper2);
+}
+
+.meta-block {
+  padding: 10px 14px;
+}
+
+.meta-block:first-child {
+  border-right: 2px solid var(--ink);
+}
+
+.meta-label {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.meta-value {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+time[data-testid="test-todo-due-date"] {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+time[data-testid="test-todo-time-remaining"] {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--green2);
+}
+
+time[data-testid="test-todo-time-remaining"].overdue {
+  color: var(--red);
+}
+
+time[data-testid="test-todo-time-remaining"].due-soon {
+  color: #7a4f00;
+}
+
+/* TAGS */
+ul[data-testid="test-todo-tags"] {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 1.5rem;
+}
+
+ul[data-testid="test-todo-tags"] li {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  padding: 5px 13px;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  background: var(--paper2);
+  cursor: default;
+  transition: all 0.15s;
+  box-shadow: 2px 2px 0 var(--paper4);
+}
+
+ul[data-testid="test-todo-tags"] li:hover {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green2);
+  box-shadow: 2px 2px 0 var(--green2);
+}
+
+/* DIVIDER */
+.h-rule {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.2rem;
+}
+.h-rule span {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+}
+.h-rule::before,
+.h-rule::after {
+  content: "";
+  height: 1.5px;
+  background: var(--paper3);
+}
+
+/* ACTIONS */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+button[data-testid="test-todo-edit-button"],
+button[data-testid="test-todo-delete-button"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  padding: 13px 16px;
+  cursor: pointer;
+  transition: all 0.12s;
+  border: 2.5px solid var(--ink);
+}
+
+button[data-testid="test-todo-edit-button"] {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green2);
+  box-shadow: 4px 4px 0 var(--green2);
+}
+
+button[data-testid="test-todo-edit-button"]:hover {
+  background: var(--green2);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+button[data-testid="test-todo-delete-button"] {
+  background: var(--paper2);
+  color: var(--red);
+  border-color: var(--red);
+  box-shadow: 4px 4px 0 var(--red2);
+}
+
+button[data-testid="test-todo-delete-button"]:hover {
+  background: var(--redlt);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--red2);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--green3);
+  outline-offset: 3px;
+}
+
+button[data-testid="test-todo-delete-button"]:focus-visible {
+  outline-color: var(--red);
+}
+
+button:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 1px 1px 0 var(--ink) !important;
+}
+
+/* BOTTOM STRIP */
+.card-footer {
+  border-top: 2.5px dashed var(--paper4);
+  background: var(--paper2);
+  padding: 9px 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.footer-ref {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+}
+
+.footer-squares {
+  display: flex;
+  gap: 5px;
+}
+
+.footer-sq {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--paper4);
+}
+
+.footer-sq:first-child {
+  background: var(--green3);
+  border-color: var(--green2);
+}
+
+/* SIDE TAB */
+.side-tab {
+  position: absolute;
+  left: -13px;
+  top: 24px;
+  width: 10px;
+  bottom: 24px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--green) 0px,
+    var(--green) 16px,
+    var(--paper3) 16px,
+    var(--paper3) 24px
+  );
+  border: 2px solid var(--ink);
+  border-right: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 520px) {
+  .page-wrapper {
+    max-width: 100%;
+  }
+  h3[data-testid="test-todo-title"] {
+    font-size: 26px;
+  }
+  .card-hero {
+    padding: 1.4rem 1.4rem 1.2rem;
+  }
+  .card-body {
+    padding: 1.2rem 1.4rem;
+  }
+  .card-footer {
+    padding: 9px 1.4rem;
+  }
+  .side-tab {
+    display: none;
+  }
+  article[data-testid="test-todo-card"] {
+    box-shadow: 5px 5px 0 var(--green2);
+  }
+}
+
+@media (max-width: 360px) {
+  h3[data-testid="test-todo-title"] {
+    font-size: 22px;
+    max-width: 100%;
+  }
+  .hero-row {
+    margin-bottom: 1.2rem;
+  }
+  p[data-testid="test-todo-description"] {
+    font-size: 13px;
+  }
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
