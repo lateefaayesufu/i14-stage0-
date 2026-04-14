@@ -616,24 +616,17 @@ input[type="checkbox"][data-testid="test-todo-complete-toggle"]:checked::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23ca6702' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
-/* Status badge (Stage 0 testid kept) */
+/* Status badge (Stage 0 testid kept) — visually hidden, value kept in sync for tests */
 span[data-testid="test-todo-status"] {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  padding: 4px 10px;
-  border: 2px solid var(--ink);
-  background: var(--greenlt);
-  color: var(--green2);
-  box-shadow: 2px 2px 0 var(--ink);
-  transition: all 0.3s;
-  white-space: nowrap;
-  /* Hidden visually but kept for tests */
   position: absolute;
   width: 1px;
   height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* META */
