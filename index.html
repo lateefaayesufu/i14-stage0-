@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo — Stage 0</title>
+    <title>Todo — Stage 1A</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="style.css" />
@@ -19,7 +19,7 @@
   </head>
   <body>
     <div class="page-wrapper">
-      <p class="pre-label">HNG Stage 0 &nbsp;/&nbsp; Frontend</p>
+      <p class="pre-label">HNG Stage 1A &nbsp;/&nbsp; Frontend</p>
 
       <article data-testid="test-todo-card" aria-label="Todo task card">
         <div class="side-tab" aria-hidden="true"></div>
@@ -27,25 +27,229 @@
         <!-- HERO -->
         <div class="card-hero">
           <div class="hero-row">
-            <div>
+            <div class="hero-title-wrap">
               <p class="hero-eyebrow">Active Task</p>
               <h3 data-testid="test-todo-title" id="task-title">
                 Survive Monday Without Crying in the Bathroom
               </h3>
             </div>
-            <span data-testid="test-todo-priority" aria-label="Priority: High"
-              >High Priority</span
-            >
+            <div class="priority-wrap">
+              <!-- Priority badge (Stage 0) -->
+              <span
+                data-testid="test-todo-priority"
+                aria-label="Priority: High"
+                id="priority-badge"
+                >High Priority</span
+              >
+              <!-- Priority indicator (Stage 1A) -->
+              <div
+                data-testid="test-todo-priority-indicator"
+                id="priority-indicator"
+                class="priority-indicator high"
+                aria-label="Priority level: High"
+                role="img"
+              >
+                <span class="priority-dot"></span>
+                <span class="priority-dot"></span>
+                <span class="priority-dot"></span>
+              </div>
+            </div>
           </div>
-          <p data-testid="test-todo-description">
-            Standup in 8 mins. Zero updates. One unfinished ticket. Three tabs
-            of Stack Overflow. You are not okay but your camera is off and
-            that's enough.
-          </p>
+
+          <!-- Description + expand/collapse -->
+          <div
+            data-testid="test-todo-collapsible-section"
+            id="desc-collapsible"
+            class="desc-collapsible"
+            aria-expanded="false"
+          >
+            <p data-testid="test-todo-description" id="task-description">
+              Standup in 8 mins. Zero updates. One unfinished ticket. Three tabs
+              of Stack Overflow. You are not okay but your camera is off and
+              that's enough.
+            </p>
+          </div>
+          <button
+            data-testid="test-todo-expand-toggle"
+            id="expand-toggle"
+            class="expand-toggle"
+            aria-expanded="false"
+            aria-controls="desc-collapsible"
+            aria-label="Expand description"
+          >
+            <span class="expand-label">Show more</span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              aria-hidden="true"
+              class="expand-chevron"
+            >
+              <path
+                d="M2 4l4 4 4-4"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- OVERDUE INDICATOR (hidden by default, shown when overdue) -->
+        <div
+          data-testid="test-todo-overdue-indicator"
+          id="overdue-indicator"
+          class="overdue-banner"
+          role="alert"
+          aria-live="assertive"
+          hidden
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle
+              cx="8"
+              cy="8"
+              r="7"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="M8 4.5v4M8 10.5v1"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span>Overdue</span>
+        </div>
+
+        <!-- EDIT FORM (hidden by default) -->
+        <div
+          data-testid="test-todo-edit-form"
+          id="edit-form"
+          class="edit-form"
+          hidden
+          role="region"
+          aria-label="Edit task"
+        >
+          <p class="edit-form-label">Edit Task</p>
+
+          <div class="form-field">
+            <label for="edit-title-input" class="field-label">Title</label>
+            <input
+              type="text"
+              id="edit-title-input"
+              data-testid="test-todo-edit-title-input"
+              class="field-input"
+              aria-label="Task title"
+              placeholder="Task title…"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="edit-description-input" class="field-label"
+              >Description</label
+            >
+            <textarea
+              id="edit-description-input"
+              data-testid="test-todo-edit-description-input"
+              class="field-input field-textarea"
+              aria-label="Task description"
+              placeholder="What needs to be done…"
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="edit-priority-select" class="field-label"
+                >Priority</label
+              >
+              <select
+                id="edit-priority-select"
+                data-testid="test-todo-edit-priority-select"
+                class="field-input field-select"
+                aria-label="Task priority"
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High" selected>High</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="edit-due-date-input" class="field-label"
+                >Due Date</label
+              >
+              <input
+                type="datetime-local"
+                id="edit-due-date-input"
+                data-testid="test-todo-edit-due-date-input"
+                class="field-input"
+                aria-label="Task due date"
+                value="2026-04-16T18:00"
+              />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              data-testid="test-todo-save-button"
+              id="save-button"
+              class="btn-save"
+              aria-label="Save changes"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M2 8.5l4.5 4.5 7.5-9"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Save
+            </button>
+            <button
+              data-testid="test-todo-cancel-button"
+              id="cancel-button"
+              class="btn-cancel"
+              aria-label="Cancel editing"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 4l8 8M12 4l-8 8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Cancel
+            </button>
+          </div>
         </div>
 
         <!-- BODY -->
-        <div class="card-body">
+        <div class="card-body" id="card-body">
           <!-- Checkbox + status -->
           <div class="check-row">
             <label for="complete-toggle" class="sr-only"
@@ -60,9 +264,25 @@
             <label class="check-label" for="complete-toggle"
               >Mark as complete</label
             >
+
+            <!-- Status control (Stage 1A) — replaces the static span -->
+            <label for="status-control" class="sr-only">Task status</label>
+            <select
+              data-testid="test-todo-status-control"
+              id="status-control"
+              class="status-select"
+              aria-label="Task status"
+            >
+              <option value="Pending">Pending</option>
+              <option value="In Progress" selected>In Progress</option>
+              <option value="Done">Done</option>
+            </select>
+
+            <!-- Status display badge (Stage 0) -->
             <span
               data-testid="test-todo-status"
               id="task-status"
+              class="status-badge"
               aria-label="Status: In Progress"
               >In Progress</span
             >
@@ -73,6 +293,7 @@
               <p class="meta-label">Due Date</p>
               <time
                 data-testid="test-todo-due-date"
+                id="due-date-display"
                 datetime="2026-04-16T18:00:00Z"
                 >Apr 16, 2026</time
               >
@@ -103,8 +324,8 @@
           <div class="actions">
             <button
               data-testid="test-todo-edit-button"
+              id="edit-button"
               aria-label="Edit task"
-              onclick="console.log('edit clicked')"
             >
               <svg
                 width="14"
@@ -149,7 +370,7 @@
         <!-- FOOTER STRIP -->
         <div class="card-footer" aria-hidden="true">
           <span class="footer-ref"
-            >TK-001 &nbsp;/&nbsp; Stage-0 &nbsp;/&nbsp; Frontend</span
+            >TK-001 &nbsp;/&nbsp; Stage-1A &nbsp;/&nbsp; Frontend</span
           >
           <div class="footer-squares">
             <div class="footer-sq"></div>
