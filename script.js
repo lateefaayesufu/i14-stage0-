@@ -54,6 +54,12 @@ const dueDateEl = document.getElementById("due-date-display");
 const COLLAPSE_THRESHOLD = 120; // chars before we show toggle
 
 function initCollapse() {
+  // Reset before applying so classes don't stack on re-render
+  collapsible.classList.remove("collapsed", "expanded");
+  state.isExpanded = false;
+  expandToggle.setAttribute("aria-expanded", "false");
+  expandLabel.textContent = "Show more";
+
   if (state.description.length > COLLAPSE_THRESHOLD) {
     collapsible.classList.add("collapsed");
     expandToggle.classList.remove("hidden");
