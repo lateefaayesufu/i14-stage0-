@@ -24,6 +24,8 @@
   --red: #9b2226;
   --red2: #641220;
   --redlt: #f8d7da;
+  --orange: #ca6702;
+  --orangelt: #fff3e0;
 }
 
 .sr-only {
@@ -50,7 +52,6 @@ body {
   overflow-x: hidden;
 }
 
-/* halftone dot texture */
 body::before {
   content: "";
   position: fixed;
@@ -62,7 +63,6 @@ body::before {
   z-index: 0;
 }
 
-/* giant ghost circle bg shape */
 body::after {
   content: "";
   position: fixed;
@@ -84,7 +84,6 @@ body::after {
   max-width: 480px;
 }
 
-/* tiny label above card */
 .pre-label {
   font-family: "Bebas Neue", sans-serif;
   font-size: 11px;
@@ -123,16 +122,15 @@ article[data-testid="test-todo-card"] {
   }
 }
 
-/* GREEN HERO */
+/* ══ HERO ══ */
 .card-hero {
   background: var(--green);
   border-bottom: 2.5px solid var(--ink);
-  padding: 1.8rem 1.8rem 1.5rem;
+  padding: 1.8rem 1.8rem 1.2rem;
   position: relative;
   overflow: hidden;
 }
 
-/* big ghost number */
 .card-hero::before {
   content: "01";
   position: absolute;
@@ -146,7 +144,6 @@ article[data-testid="test-todo-card"] {
   letter-spacing: -2px;
 }
 
-/* diagonal stripe accent top-right */
 .card-hero::after {
   content: "";
   position: absolute;
@@ -172,6 +169,11 @@ article[data-testid="test-todo-card"] {
   margin-bottom: 1rem;
 }
 
+.hero-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
 .hero-eyebrow {
   font-family: "Bebas Neue", sans-serif;
   font-size: 11px;
@@ -186,7 +188,7 @@ h3[data-testid="test-todo-title"] {
   font-weight: 800;
   color: #fff;
   line-height: 1.05;
-  max-width: 300px;
+  word-wrap: break-word;
   transition: all 0.3s;
 }
 
@@ -195,8 +197,15 @@ h3[data-testid="test-todo-title"].done {
   opacity: 0.35;
 }
 
-span[data-testid="test-todo-priority"] {
+.priority-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
   flex-shrink: 0;
+}
+
+span[data-testid="test-todo-priority"] {
   font-family: "Bebas Neue", sans-serif;
   font-size: 10.5px;
   letter-spacing: 0.16em;
@@ -209,6 +218,59 @@ span[data-testid="test-todo-priority"] {
   box-shadow: 2px 2px 0 var(--ink);
 }
 
+/* ══ PRIORITY INDICATOR ══ */
+.priority-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.2s;
+}
+
+/* Low — 1 dot lit, muted green */
+.priority-indicator.low .priority-dot:nth-child(1) {
+  background: #74c69d;
+}
+
+/* Medium — 2 dots lit, gold */
+.priority-indicator.medium .priority-dot:nth-child(1),
+.priority-indicator.medium .priority-dot:nth-child(2) {
+  background: #ffd166;
+}
+
+/* High — all 3 lit, red */
+.priority-indicator.high .priority-dot:nth-child(1),
+.priority-indicator.high .priority-dot:nth-child(2),
+.priority-indicator.high .priority-dot:nth-child(3) {
+  background: #ef233c;
+}
+
+/* ══ DESCRIPTION + EXPAND ══ */
+.desc-collapsible {
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.desc-collapsible.collapsed {
+  max-height: 3.2em; /* ~2 lines */
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+
+.desc-collapsible.expanded {
+  max-height: 200px;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 p[data-testid="test-todo-description"] {
   font-family: "Fraunces", serif;
   font-style: italic;
@@ -218,7 +280,211 @@ p[data-testid="test-todo-description"] {
   line-height: 1.6;
 }
 
-/* CARD BODY */
+.expand-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--green-mid);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  padding: 8px 0 0;
+  margin-top: 8px;
+  width: 100%;
+  text-align: left;
+  transition: color 0.15s;
+}
+
+.expand-toggle:hover {
+  color: #fff;
+}
+
+.expand-toggle:focus-visible {
+  outline: 2px solid var(--green3);
+  outline-offset: 3px;
+}
+
+.expand-chevron {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.expand-toggle[aria-expanded="true"] .expand-chevron {
+  transform: rotate(180deg);
+}
+
+.expand-toggle.hidden {
+  display: none;
+}
+
+/* ══ OVERDUE BANNER ══ */
+.overdue-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red2);
+  border-bottom: 2.5px solid var(--ink);
+  color: #fff;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  padding: 9px 1.8rem;
+}
+
+.overdue-banner[hidden] {
+  display: none;
+}
+
+/* ══ EDIT FORM ══ */
+.edit-form {
+  border-bottom: 2.5px solid var(--ink);
+  background: var(--paper2);
+  padding: 1.5rem 1.8rem;
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.edit-form[hidden] {
+  display: none;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.edit-form-label {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.field-label {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.field-input {
+  font-family: "DM Mono", monospace;
+  font-size: 12.5px;
+  color: var(--ink);
+  background: var(--offwhite);
+  border: 2px solid var(--ink);
+  padding: 9px 12px;
+  width: 100%;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px var(--greenlt);
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.field-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%231a1208' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.btn-save,
+.btn-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: all 0.12s;
+  border: 2.5px solid var(--ink);
+}
+
+.btn-save {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green2);
+  box-shadow: 4px 4px 0 var(--green2);
+}
+
+.btn-save:hover {
+  background: var(--green2);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.btn-cancel {
+  background: var(--paper2);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--paper4);
+}
+
+.btn-cancel:hover {
+  background: var(--paper3);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.btn-save:focus-visible,
+.btn-cancel:focus-visible {
+  outline: 3px solid var(--green3);
+  outline-offset: 3px;
+}
+
+.btn-save:active,
+.btn-cancel:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 1px 1px 0 var(--ink) !important;
+}
+
+/* ══ CARD BODY ══ */
 .card-body {
   padding: 1.5rem 1.8rem 1.4rem;
 }
@@ -227,12 +493,13 @@ p[data-testid="test-todo-description"] {
 .check-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   padding: 12px 14px 12px 16px;
   border: 2px solid var(--ink);
   background: var(--paper2);
   margin-bottom: 1.2rem;
   position: relative;
+  flex-wrap: wrap;
 }
 
 .check-row::before {
@@ -244,6 +511,19 @@ p[data-testid="test-todo-description"] {
   width: 5px;
   background: var(--green3);
   border-right: 2px solid var(--ink);
+}
+
+/* When in-progress */
+.check-row.in-progress::before {
+  background: var(--green3);
+}
+/* When pending */
+.check-row.pending::before {
+  background: var(--gold);
+}
+/* When done */
+.check-row.done::before {
+  background: var(--green2);
 }
 
 input[type="checkbox"][data-testid="test-todo-complete-toggle"] {
@@ -294,29 +574,69 @@ input[type="checkbox"][data-testid="test-todo-complete-toggle"]:checked::after {
   user-select: none;
   flex: 1;
   letter-spacing: 0.04em;
+  min-width: 80px;
 }
 
+/* ══ STATUS SELECT (Stage 1A) ══ */
+.status-select {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  padding: 4px 24px 4px 10px;
+  border: 2px solid var(--ink);
+  background: var(--greenlt);
+  color: var(--green2);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%231b4332' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.status-select:focus-visible {
+  outline: 3px solid var(--green3);
+  outline-offset: 3px;
+}
+
+.status-select.done {
+  background-color: var(--green);
+  color: #fff;
+  border-color: var(--green2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.status-select.pending {
+  background-color: var(--orangelt);
+  color: var(--orange);
+  border-color: var(--orange);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23ca6702' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Status badge (Stage 0 testid kept) */
 span[data-testid="test-todo-status"] {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.14em;
-  padding: 4px 11px;
+  padding: 4px 10px;
   border: 2px solid var(--ink);
   background: var(--greenlt);
   color: var(--green2);
   box-shadow: 2px 2px 0 var(--ink);
   transition: all 0.3s;
   white-space: nowrap;
+  /* Hidden visually but kept for tests */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
 }
 
-span[data-testid="test-todo-status"].done {
-  background: var(--green);
-  color: #fff;
-  border-color: var(--green2);
-  box-shadow: 2px 2px 0 var(--green2);
-}
-
-/* META two-column grid */
+/* META */
 .meta-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -341,13 +661,6 @@ span[data-testid="test-todo-status"].done {
   margin-bottom: 5px;
 }
 
-.meta-value {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--ink);
-  letter-spacing: 0.02em;
-}
-
 time[data-testid="test-todo-due-date"] {
   display: block;
   font-size: 12.5px;
@@ -370,6 +683,10 @@ time[data-testid="test-todo-time-remaining"].overdue {
 
 time[data-testid="test-todo-time-remaining"].due-soon {
   color: #7a4f00;
+}
+
+time[data-testid="test-todo-time-remaining"].completed {
+  color: var(--muted);
 }
 
 /* TAGS */
@@ -484,7 +801,7 @@ button:active {
   box-shadow: 1px 1px 0 var(--ink) !important;
 }
 
-/* BOTTOM STRIP */
+/* FOOTER */
 .card-footer {
   border-top: 2.5px dashed var(--paper4);
   background: var(--paper2);
@@ -536,7 +853,27 @@ button:active {
   border-right: none;
 }
 
-/* RESPONSIVE */
+/* ══ DONE STATE overrides ══ */
+article[data-testid="test-todo-card"].is-done .card-hero {
+  opacity: 0.75;
+}
+
+article[data-testid="test-todo-card"].is-done .card-body {
+  opacity: 0.8;
+}
+
+/* ══ OVERDUE card accent ══ */
+article[data-testid="test-todo-card"].is-overdue .side-tab {
+  background: repeating-linear-gradient(
+    180deg,
+    var(--red) 0px,
+    var(--red) 16px,
+    var(--paper3) 16px,
+    var(--paper3) 24px
+  );
+}
+
+/* ══ RESPONSIVE ══ */
 @media (max-width: 520px) {
   .page-wrapper {
     max-width: 100%;
@@ -559,6 +896,18 @@ button:active {
   article[data-testid="test-todo-card"] {
     box-shadow: 5px 5px 0 var(--green2);
   }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .overdue-banner {
+    padding: 9px 1.4rem;
+  }
+  .edit-form {
+    padding: 1.2rem 1.4rem;
+  }
+  .check-row {
+    gap: 8px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -574,5 +923,11 @@ button:active {
   }
   .actions {
     grid-template-columns: 1fr;
+  }
+  .form-actions {
+    grid-template-columns: 1fr;
+  }
+  .check-row {
+    flex-wrap: wrap;
   }
 }
